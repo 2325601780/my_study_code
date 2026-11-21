@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="site-header__inner">
+            <div class="brand" aria-label="译间">
+                <span class="brand-mark" aria-hidden="true">译</span>
+                <span class="brand-name">译间</span>
+            </div>
+            <div class="demo-status" title="当前为界面演示，文本不会上传">
+                <span class="status-dot" aria-hidden="true"></span>
+                <span>本地演示</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        <section class="intro" aria-labelledby="page-title">
+            <h1 id="page-title">翻译</h1>
+            <p class="intro-copy">左侧输入原文，右侧查看译文。</p>
+        </section>
+
+        <section class="workspace" aria-labelledby="workspace-title">
+            <h2 class="sr-only" id="workspace-title">翻译工作区</h2>
+
+            <div class="language-bar">
+                <div class="language-field">
+                    <label class="field-label" for="source-language">原文语言</label>
+                    <div class="select-shell">
+                        <select class="language-select" id="source-language" name="source-language">
+                            <option value="中文" selected>中文（简体）</option>
+                            <option value="英文">English</option>
+                            <option value="日语">日本語</option>  
+                            <option value="韩语">한국어</option>
+                            <option value="法语">Français</option>
+                            <option value="西班牙语">Español</option>
+                            <option value="德语">Deutsch</option>
+                        </select>
+                        <svg class="od-icon select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="m6 9 6 6 6-6"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <button class="swap-button" id="swap-button" type="button" aria-label="互换原文语言和目标语言" title="互换语言">
+                    <svg class="od-icon swap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M7 7h11"></path>
+                        <path d="m15 3 4 4-4 4"></path>
+                        <path d="M17 17H6"></path>
+                        <path d="m9 21-4-4 4-4"></path>
+                    </svg>
+                </button>
+
+                <div class="language-field">
+                    <label class="field-label" for="target-language">目标语言</label>
+                    <div class="select-shell">
+                        <select class="language-select" id="target-language" name="target-language">
+                            <option value="中文">中文（简体）</option>
+                            <option value="英文" selected>English</option>
+                            <option value="日语">日本語</option>  
+                            <option value="韩语">한국어</option>
+                            <option value="法语">Français</option>
+                            <option value="西班牙语">Español</option>
+                            <option value="德语">Deutsch</option>
+                        </select>
+                        <svg class="od-icon select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="m6 9 6 6 6-6"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <button class="translate-button" id="translate-button" type="button" aria-label="翻译原文"
+                    aria-busy="false">
+                    <span id="translate-label">翻译</span>
+                    <svg class="od-icon translate-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M5 12h14"></path>
+                        <path d="m13 6 6 6-6 6"></path>
+                    </svg>
+                    <span class="button-spinner" id="translate-spinner" hidden aria-hidden="true"></span>
+                </button>
+            </div>
+
+            <div class="editor-grid">
+                <section class="editor-panel source-panel" aria-labelledby="source-heading">
+                    <div class="panel-head">
+                        <label class="panel-title" id="source-heading" for="source-text">原文</label>
+                    </div>
+
+                    <textarea class="source-input" id="source-text" name="source-text" maxlength="2000"
+                        spellcheck="false" placeholder="在这里写下或粘贴要翻译的内容…" aria-describedby="input-error"></textarea>
+                    <p class="field-error" id="input-error" role="alert" hidden></p>
+
+                    <div class="panel-foot">
+                        <span class="character-count"><span id="count-current">0</span><span
+                                class="count-divider">/</span>2,000</span>
+                        <div class="source-actions">
+                            <button class="quiet-button" id="sample-button" type="button">载入示例</button>
+                            <button class="quiet-button" id="clear-button" type="button">清空</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="editor-panel result-panel" aria-labelledby="result-heading">
+                    <div class="panel-head">
+                        <h3 class="panel-title" id="result-heading">译文</h3>
+                    </div>
+
+                    <div class="result-body" id="result-region" aria-busy="false">
+                        <div class="empty-state" id="empty-state">
+                            <p class="empty-copy">译文会显示在这里。</p>
+                        </div>
+
+                        <div class="loading-state" id="loading-state" hidden aria-label="正在翻译">
+                            <span class="loading-label">正在翻译</span>
+                            <span class="skeleton skeleton-1" aria-hidden="true"></span>
+                            <span class="skeleton skeleton-2" aria-hidden="true"></span>
+                            <span class="skeleton skeleton-3" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="result-state" id="result-state" hidden>
+                            <p class="result-text" id="result-text" lang="en"></p>
+                        </div>
+
+                        <div class="result-error" id="result-error" hidden>
+                            <p class="error-title">未收录这段内容</p>
+                            <p class="error-copy">可以载入示例，或接入真实翻译服务。</p>
+                            <button class="quiet-button error-action" id="error-sample-button"
+                                type="button">载入示例</button>
+                        </div>
+                    </div>
+
+                    <div class="panel-foot result-foot">
+                        <span class="demo-note">演示词库</span>
+                        <button class="copy-button" id="copy-button" type="button" hidden>
+                            <span class="copy-icon copy-icon-default" aria-hidden="true">
+                                <svg class="od-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="8" y="8" width="12" height="12" rx="2"></rect>
+                                    <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
+                                </svg>
+                            </span>
+                            <span class="copy-icon copy-icon-success" aria-hidden="true">
+                                <svg class="od-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m5 12 4 4L19 6"></path>
+                                </svg>
+                            </span>
+                            <span id="copy-label">复制</span>
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <div class="sr-only" id="status-announcer" role="status" aria-live="polite"></div>
+    <div class="sr-only" id="copy-status" role="status" aria-live="polite"></div>
+    <script src="./index.js"></script>
+</body>
+
+</html>
